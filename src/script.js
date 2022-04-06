@@ -41,7 +41,7 @@
     issueId = issueId.replace("#", "");
 
     let kind = [...document.querySelectorAll(".js-issue-labels a span")].map(e => e.innerText).find(e => e.startsWith("kind/"));
-    if (kind === null) kind = "CHANGEME";
+    if (!kind) kind = "CHANGEME";
 
     kind = kind.replace("kind/", "");
     const prefix = getBranchPrefix(kind);
