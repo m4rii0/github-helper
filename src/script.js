@@ -78,7 +78,7 @@
 
   const callback = (mutationsList, obv) => {
     for (const mutation of mutationsList) {
-      if (mutation.type === 'childList' && mutation.target.ariaLabel === 'Create a branch for this issue') {
+      if (mutation.type === 'childList' && mutation.target.getAttribute('aria-label') === 'Create a branch for this issue') {
         document.getElementById('branch-name').value = getBranchName();
         break;
       }
