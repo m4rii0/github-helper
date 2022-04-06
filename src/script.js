@@ -1,11 +1,10 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      0.2
+// @version      0.3.0
 // @description  Github helper
 // @author       m4rii0
-// @match        https://github.com/*/issues
-// @match        https://github.com/*/issues/*
+// @match        https://github.com/*
 // @icon         https://github.githubassets.com/pinned-octocat.svg
 // @downloadURL  https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js
 // @updateURL    https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js
@@ -14,6 +13,19 @@
 
 (function () {
   'use strict';
+
+  let observer;
+
+  const observerConfig = {
+    'issue-list': {
+      target: () => document.querySelector(".repository-content"),
+      config: { childList: true, attributes: false, subtree: true }
+    },
+    'issue-detail': {
+      target: () => document.querySelector('[data-target=\'create-issue-branch.details\']'),
+      config: { childList: true, attributes: true, subtree: false }
+    }
+  }
 
   const getBranchPrefix = (kind) => {
     let prefix;
@@ -41,7 +53,7 @@
     issueId = issueId.replace("#", "");
 
     let kind = [...document.querySelectorAll(".js-issue-labels a span")].map(e => e.innerText).find(e => e.startsWith("kind/"));
-    if (kind === null) kind = "CHANGEME";
+    if (!kind) kind = "CHANGEME";
 
     kind = kind.replace("kind/", "");
     const prefix = getBranchPrefix(kind);
@@ -64,23 +76,35 @@
     header.prepend(button);
   }
 
-  const initObserver = () => {
-    let targetNode = document.querySelector('[data-target=\'create-issue-branch.details\']');
-    let config = { childList: true, attributes: false, subtree: true };
-
-    const obvCallback = (mutationsList, obv) => {
-      for (const mutation of mutationsList) {
-        if (mutation.type === 'childList' && mutation.target.ariaLabel === 'Create a branch for this issue') {
-          document.getElementById('branch-name').value = getBranchName();
-          return;
-        }
+  const callback = (mutationsList, obv) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'childList' && mutation.target.ariaLabel === 'Create a branch for this issue') {
+        document.getElementById('branch-name').value = getBranchName();
+        break;
       }
     }
 
-    let observer = new MutationObserver(obvCallback);
-    observer.observe(targetNode, config);
+    if (document.querySelector(".gh-header-actions")) {
+      createButton();
+      initObserver('issue-detail');
+    }
   }
 
-  createButton();
-  initObserver();
+  const initObserver = (page) => {
+    if (page) {
+      observer.observe(observerConfig[page].target(), observerConfig[page].config);
+    } else {
+      Object.keys(observerConfig).forEach(key => {
+        observer.observe(observerConfig[key].target(), observerConfig[key].config);
+      })
+    }
+  }
+
+  const onPageLoad = () => {
+    observer = new MutationObserver(callback);
+    initObserver();
+    createButton();
+  }
+
+  onPageLoad();
 })();
