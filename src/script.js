@@ -2,7 +2,7 @@
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
 // @version      0.3.2
-// @description  Github helper
+// @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
 // @icon         https://github.githubassets.com/pinned-octocat.svg
