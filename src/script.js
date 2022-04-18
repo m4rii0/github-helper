@@ -14,24 +14,82 @@
 (function () {
   'use strict';
 
-  let observer;
+  let previousPath;
 
-  const observerConfig = {
-    'issue-list': {
-      target: () => document.querySelector(".repository-content"),
-      config: { childList: true, attributes: false, subtree: true }
+  let pathObserver;
+  let newBranchObserver;
+
+  const config = {
+    regexes: {
+      'issue-list': /^\/[\w-]+\/[\w-]+\/issues\/?$/,
+      'issue-detail': /^\/[\w-]+\/[\w-]+\/issues\/\d+$/
     },
-    'issue-detail': {
-      target: () => document.querySelector('[data-target=\'create-issue-branch.details\']'),
-      config: { childList: true, attributes: true, subtree: false }
+  };
+
+  /* UI STUFF */
+  const pathType = () => {
+    const path = window.location.pathname;
+    if (!path) return;
+
+    return Object.keys(config.regexes).find(key => config.regexes[key].test(path));
+  }
+
+  const onPathChange = (currentPathType) => {
+    if (currentPathType === 'issue-detail') {
+      createButton();
+      initNewBranchObserver();
     }
   }
 
+  const createButton = () => {
+    const header = document.querySelector('.gh-header-actions');
+    if (!header) return;
+
+    let button = document.createElement('button');
+    button.id = 'button-generate-branch-name';
+    button.innerText = '★ Generate branch name';
+    button.classList.add('btn', 'btn-sm', 'mr-2');
+    button.onclick = () => prompt('Branch name', getBranchName());
+
+    header.prepend(button);
+  }
+
+  const initNewBranchObserver = () => {
+    newBranchObserver = new MutationObserver(newBranchCallBack);
+
+    const target = document.querySelector('[data-target=\'create-issue-branch.details\']');
+    if (!target) return;
+    newBranchObserver.observe(target, { childList: true, attributes: true, subtree: true });
+  }
+
+  /* CALLBACKS */
+  const onPathChangeCallback = () => {
+    const path = window.location.pathname;
+    if (path === previousPath) return;
+
+    const currentPathType = pathType();
+    if (!currentPathType) return;
+
+    onPathChange(currentPathType);
+
+    previousPath = path;
+  }
+
+  const newBranchCallBack = (mutationList) => {
+    for (const mutation of mutationList) {
+      if (mutation.type === 'childList' && mutation.target.getAttribute('aria-label') === 'Create a branch for this issue') {
+        document.getElementById('branch-name').value = getBranchName();
+        break;
+      }
+    }
+  }
+
+  /* HELPERS */
   const getBranchPrefix = (kind) => {
     let prefix;
     switch (kind) {
-      case "bug":
-        prefix = "bugfix";
+      case 'bug':
+        prefix = 'bugfix';
         break;
       default:
         prefix = kind;
@@ -41,70 +99,29 @@
     return prefix;
   }
 
-  const onClick = () => {
-    prompt("Branch name", getBranchName());
-  }
-
   const getBranchName = () => {
-    let title = document.querySelector("h1 > span.js-issue-title").innerText;
-    title = title.trim().toLowerCase().replaceAll(" ", "-");
+    let title = document.querySelector('h1 > span.js-issue-title').innerText;
+    title = title.trim().toLowerCase().replaceAll(' ', '-');
 
-    let issueId = document.querySelector("h1 > .f1-light").innerText;
-    issueId = issueId.replace("#", "");
+    let issueId = document.querySelector('h1 > .f1-light').innerText;
+    issueId = issueId.replace('#', '');
 
-    let kind = [...document.querySelectorAll(".js-issue-labels a span")].map(e => e.innerText).find(e => e.startsWith("kind/"));
-    if (!kind) kind = "CHANGEME";
+    let kind = [...document.querySelectorAll('.js-issue-labels a span')].map(e => e.innerText).find(e => e.startsWith('kind/'));
+    if (!kind) kind = 'CHANGEME';
 
-    kind = kind.replace("kind/", "");
+    kind = kind.replace('kind/', '');
     const prefix = getBranchPrefix(kind);
-    const branchName = `${prefix}/GH-${issueId}-${title}`;
-
-    return branchName;
+    return `${prefix}/GH-${issueId}-${title}`;
   }
 
-  const createButton = () => {
-    if (document.getElementById("button-generate-branch-name") != null) return;
 
-    const header = document.querySelector(".gh-header-actions");
-    if (header == null) return;
-    let button = document.createElement("button");
-    button.id = "button-generate-branch-name";
-    button.innerText = "★ Generate branch name";
-    button.classList.add("btn", "btn-sm", "mr-2");
-    button.onclick = onClick;
+  const init = () => {
+    pathObserver = new MutationObserver(onPathChangeCallback);
+    let target = document.querySelector('.application-main');
+    if (!target) return;
 
-    header.prepend(button);
+    pathObserver.observe(target, { childList: true, subtree: true });
   }
 
-  const callback = (mutationsList, obv) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'childList' && mutation.target.getAttribute('aria-label') === 'Create a branch for this issue') {
-        document.getElementById('branch-name').value = getBranchName();
-        break;
-      }
-    }
-
-    if (document.querySelector(".gh-header-actions")) {
-      createButton();
-      initObserver('issue-detail');
-    }
-  }
-
-  const initObserver = (page) => {
-    if (page) {
-      observer.observe(observerConfig[page].target(), observerConfig[page].config);
-    } else {
-      Object.keys(observerConfig).forEach(key => {
-        observer.observe(observerConfig[key].target(), observerConfig[key].config);
-      })
-    }
-  }
-
-  const onPageLoad = () => {
-    observer = new MutationObserver(callback);
-    initObserver();
-    createButton();
-  }
-
-  onPageLoad();
+  init();
 })();
