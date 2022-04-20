@@ -21,8 +21,8 @@
 
   const config = {
     regexes: {
-      'issue-list': /^\/[\w-]+\/[\w-]+\/issues\/?$/,
-      'issue-detail': /^\/[\w-]+\/[\w-]+\/issues\/\d+$/
+      'issue-list': /^.*\/issues\/?$/,
+      'issue-detail': /^.*\/issues\/\d+$/
     },
   };
 
