@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      0.3.2
+// @version      0.3.3
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
@@ -21,8 +21,8 @@
 
   const config = {
     regexes: {
-      'issue-list': /^\/[\w-]+\/[\w-]+\/issues\/?$/,
-      'issue-detail': /^\/[\w-]+\/[\w-]+\/issues\/\d+$/
+      'issue-list': /^.*\/issues\/?$/,
+      'issue-detail': /^.*\/issues\/\d+$/
     },
   };
 
