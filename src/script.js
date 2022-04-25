@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      0.3.3
+// @version      1.0.0
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
