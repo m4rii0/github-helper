@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New README
 - Added LICENSE
 
+### Breaking Changes
+
+- Script remote name was renamed to `helper.user.js` breaking the remote reference in the previous releases.
+A fresh installation is required to use the new remote name and get updates automatically. (Get it [here](https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/helper.user.js))
+
 ## [0.3.3] - 2022-04-20
 
 ### Fixed
