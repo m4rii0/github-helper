@@ -13,7 +13,8 @@ It will generate a branch name based on the next pattern:
 ```
 <issue-type>/GH-<issue-number>-<issue-title>
 ```
-The issue type will be obtained from the issue labels with the prefix `kind/`, i.e. `kind/feature`, `kind/documentation`.
+The issue type will be obtained from the issue labels with the prefix `kind/`, i.e. `kind/feature`, `kind/documentation`, otherwise the default prefix will be `CHANGEME`.
+
 Right now there is an exception for the `kind/bug` label, which will be replaced for `bugfix`.
 
 ## Installation
