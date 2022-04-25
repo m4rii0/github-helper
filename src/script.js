@@ -9,6 +9,7 @@
 // @downloadURL  https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js
 // @updateURL    https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js
 // @grant        none
+// @license      GNU General Public License v3.0
 // ==/UserScript==
 
 (function () {
