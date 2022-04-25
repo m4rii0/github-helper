@@ -1,7 +1,7 @@
 # GitHub Helper
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/m4rii0/github-helper?color=green)
 ![GitHub](https://img.shields.io/github/license/m4rii0/github-helper)
-![GitHub file size in bytes](https://img.shields.io/github/size/m4rii0/github-helper/src/script.js)
+![GitHub file size in bytes](https://img.shields.io/github/size/m4rii0/github-helper/src/helper.user.js)
 ![Productivity](https://img.shields.io/badge/Productivity-Over%209000-blue)
 
 Improve your productivity by using GitHub Helper.
@@ -19,7 +19,7 @@ Right now there is an exception for the `kind/bug` label, which will be replaced
 ## Installation
 
 - You need to install Tampermonkey (https://tampermonkey.net/).
-- Then you can install the script by clicking [here](https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js).
+- Then you can install the script by clicking [here](https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/helper.user.js).
 
 ## How to use it
 
