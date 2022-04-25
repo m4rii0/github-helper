@@ -1,14 +1,15 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      0.3.3
+// @version      1.0.0
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
 // @icon         https://github.githubassets.com/pinned-octocat.svg
-// @downloadURL  https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js
-// @updateURL    https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/script.js
+// @downloadURL  https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/helper.user.js
+// @updateURL    https://raw.githubusercontent.com/m4rii0/github-helper/stable/src/helper.user.js
 // @grant        none
+// @license      GNU General Public License v3.0
 // ==/UserScript==
 
 (function () {
