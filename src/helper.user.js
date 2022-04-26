@@ -105,7 +105,6 @@
     title = title
               .trim()
               .toLowerCase()
-              .substring(0, 60)
               .replaceAll(' ', '-')
               .replace(/[^\w\-]+/, '');
 
@@ -117,7 +116,9 @@
 
     kind = kind.replace('kind/', '');
     const prefix = getBranchPrefix(kind);
-    return `${prefix}/GH-${issueId}-${title}`;
+
+    let branchName = `${prefix}/GH-${issueId}-${title}`;
+    return branchName.substring(0, 60);
   }
 
 
