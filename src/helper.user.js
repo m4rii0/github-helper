@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      1.0.0
+// @version      1.1.0
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
@@ -102,7 +102,12 @@
 
   const getBranchName = () => {
     let title = document.querySelector('h1 > span.js-issue-title').innerText;
-    title = title.trim().toLowerCase().replaceAll(' ', '-');
+    title = title
+              .trim()
+              .toLowerCase()
+              .substring(0, 60)
+              .replaceAll(' ', '-')
+              .replace(/[^\w\-]+/, '');
 
     let issueId = document.querySelector('h1 > .f1-light').innerText;
     issueId = issueId.replace('#', '');
