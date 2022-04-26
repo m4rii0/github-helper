@@ -107,7 +107,7 @@
               .toLowerCase()
               .substring(0, 60)
               .replaceAll(' ', '-')
-              .replace(/[^\w-_]+/, '');
+              .replace(/[^\w\-]+/, '');
 
     let issueId = document.querySelector('h1 > .f1-light').innerText;
     issueId = issueId.replace('#', '');
