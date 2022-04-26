@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      1.1.0
+// @version      1.1.1
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
@@ -105,7 +105,6 @@
     title = title
               .trim()
               .toLowerCase()
-              .substring(0, 60)
               .replaceAll(' ', '-')
               .replace(/[^\w\-]+/, '');
 
@@ -117,7 +116,9 @@
 
     kind = kind.replace('kind/', '');
     const prefix = getBranchPrefix(kind);
-    return `${prefix}/GH-${issueId}-${title}`;
+
+    let branchName = `${prefix}/GH-${issueId}-${title}`;
+    return branchName.substring(0, 60);
   }
 
 
