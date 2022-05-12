@@ -20,10 +20,13 @@
   let pathObserver;
   let newBranchObserver;
 
+  const MAX_BRANCH_LENGTH = 60;
+
   const config = {
     regexes: {
       'issue-list': /^.*\/issues\/?$/,
-      'issue-detail': /^.*\/issues\/\d+$/
+      'issue-detail': /^.*\/issues\/\d+$/,
+      'new-pull-request': /^.*\/compare\/.*?$/
     },
   };
 
@@ -36,9 +39,16 @@
   }
 
   const onPathChange = (currentPathType) => {
-    if (currentPathType === 'issue-detail') {
-      createButton();
-      initNewBranchObserver();
+    switch (currentPathType) {
+      case 'issue-detail':
+        createButton();
+        initNewBranchObserver();
+        break;
+      case 'new-pull-request':
+        fillNewPrForm();
+        break;
+      default:
+        break;
     }
   }
 
@@ -61,6 +71,42 @@
     const target = document.querySelector('[data-target=\'create-issue-branch.details\']');
     if (!target) return;
     newBranchObserver.observe(target, { childList: true, attributes: true, subtree: true });
+  }
+
+  const fillNewPrForm = () => {
+    const branchRegex = /(?<type>\w+)\/(GH-)?(?<id>\d+)-(?<title>.*)/;
+
+    let branchName = document.querySelector('#head-ref-selector span');
+    if (!branchName) return;
+
+    branchName = branchName.innerText;
+
+    let match = branchName.match(branchRegex);
+    if (!match) return;
+
+    let { id, title } = match.groups;
+
+    // Tittle
+    let prTitleInput = document.querySelector('#pull_request_title');
+    if (prTitleInput) {
+      prTitleInput.value = getPrTitle(branchName, title);
+    }
+
+    // Set the Closes #XXX in the body
+    let pullRequestBody = document.querySelector('#pull_request_body');
+    if (pullRequestBody && pullRequestBody.value === '') { // Only writing if it's empty
+      pullRequestBody.value = `Closes #${id}`;
+    }
+
+    // Auto assign
+    let assignYourselfButton = document.querySelector('#assignees-select-menu+span button');
+    if (assignYourselfButton) {
+      assignYourselfButton.click();
+    }
+
+    // Set PR in draft mode
+    let draftButton = document.querySelector('#draft_on[value=\'on\']');
+    if (draftButton) draftButton.click();
   }
 
   /* CALLBACKS */
@@ -118,7 +164,20 @@
     const prefix = getBranchPrefix(kind);
 
     let branchName = `${prefix}/GH-${issueId}-${title}`;
-    return branchName.substring(0, 60);
+    return branchName.substring(0, MAX_BRANCH_LENGTH);
+  }
+
+  const getPrTitle = (branchName = '', regexTitle = '') => {
+    let title = regexTitle
+      .replaceAll('-', ' ')
+      .trim();
+
+    title = title.charAt(0).toUpperCase() + title.slice(1); // Capitalize first letter
+
+    if (branchName.length >= MAX_BRANCH_LENGTH) {
+      title = title + '...';
+    }
+    return title;
   }
 
 
