@@ -58,7 +58,7 @@
   const initNewBranchObserver = () => {
     newBranchObserver = new MutationObserver(newBranchCallBack);
 
-    const target = document.querySelector('[data-target=\'create-issue-branch.details\']');
+    const target = document.querySelector('[data-target=\'create-branch.details\']');
     if (!target) return;
     newBranchObserver.observe(target, { childList: true, attributes: true, subtree: true });
   }
@@ -78,8 +78,8 @@
 
   const newBranchCallBack = (mutationList) => {
     for (const mutation of mutationList) {
-      if (mutation.type === 'childList' && mutation.target.getAttribute('aria-label') === 'Create a branch for this issue') {
-        document.getElementById('branch-name').value = getBranchName();
+      if (mutation.type === 'childList' && mutation.target.getAttribute('aria-label') === 'Create a branch') {
+        document.getElementById('name').value = getBranchName();
         break;
       }
     }
