@@ -118,7 +118,15 @@
     const prefix = getBranchPrefix(kind);
 
     let branchName = `${prefix}/GH-${issueId}-${title}`;
-    return branchName.substring(0, 60);
+    return branchName.substring(0, calculateMaxBranchNameLength());
+  }
+
+  const calculateMaxBranchNameLength = () => {
+    const MAX_BRANCH_NAME_LENGTH = 63;
+
+    const repoNameLength = window.location.pathname.split('/')[2].length;
+
+    return MAX_BRANCH_NAME_LENGTH - repoNameLength;
   }
 
 
