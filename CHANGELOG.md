@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- The branch generated now follows RFC 1035 having in mind the repo name.
+- The branch generated now follows RFC 1035 taking in consideration the repo name.
 
 ### Fixed
 
