@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      1.1.2
+// @version      1.2.0
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
@@ -106,7 +106,7 @@
               .trim()
               .toLowerCase()
               .replaceAll(' ', '-')
-              .replace(/[^\w\-]+/, '');
+              .replace(/[^\w\-]+/g, '');
 
     let issueId = document.querySelector('h1 > .f1-light').innerText;
     issueId = issueId.replace('#', '');
@@ -118,7 +118,15 @@
     const prefix = getBranchPrefix(kind);
 
     let branchName = `${prefix}/GH-${issueId}-${title}`;
-    return branchName.substring(0, 60);
+    return branchName.substring(0, calculateMaxBranchNameLength());
+  }
+
+  const calculateMaxBranchNameLength = () => {
+    const MAX_BRANCH_NAME_LENGTH = 63;
+
+    const repoNameLength = window.location.pathname.split('/')[2].length;
+
+    return MAX_BRANCH_NAME_LENGTH - repoNameLength;
   }
 
 
