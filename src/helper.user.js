@@ -119,7 +119,7 @@
 
     let branchName = `${prefix}/GH-${issueId}-${title}`;
     branchName = branchName.substring(0, calculateMaxBranchNameLength());
-    return branchName.replace(/\-$/, ''); // removing trailing dashes
+    return branchName.replace(/\-$/, ''); // removing trailing hyphens
   }
 
   const calculateMaxBranchNameLength = () => {
