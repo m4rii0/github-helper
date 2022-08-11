@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Github helper
 // @namespace    https://github.com/m4rii0
-// @version      1.2.0
+// @version      1.2.1
 // @description  Github helper to speed up your work
 // @author       m4rii0
 // @match        https://github.com/*
@@ -118,7 +118,8 @@
     const prefix = getBranchPrefix(kind);
 
     let branchName = `${prefix}/GH-${issueId}-${title}`;
-    return branchName.substring(0, calculateMaxBranchNameLength());
+    branchName = branchName.substring(0, calculateMaxBranchNameLength());
+    return branchName.replace(/\-$/, ''); // removing trailing hyphens
   }
 
   const calculateMaxBranchNameLength = () => {
