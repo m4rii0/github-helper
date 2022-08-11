@@ -118,7 +118,8 @@
     const prefix = getBranchPrefix(kind);
 
     let branchName = `${prefix}/GH-${issueId}-${title}`;
-    return branchName.substring(0, calculateMaxBranchNameLength());
+    branchName = branchName.substring(0, calculateMaxBranchNameLength());
+    return branchName.replace(/\-$/, ''); // removing trailing dashes
   }
 
   const calculateMaxBranchNameLength = () => {
