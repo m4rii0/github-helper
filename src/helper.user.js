@@ -101,7 +101,7 @@
   }
 
   const getBranchName = () => {
-    let title = document.querySelector('h1 > span.js-issue-title').innerText;
+    let title = document.querySelector('h1 > bdi.js-issue-title').innerText;
     title = title
               .trim()
               .toLowerCase()
